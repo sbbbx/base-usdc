@@ -1,0 +1,12 @@
+{
+  "fetched_at_utc": "2026-10-15T12:05:04+00:00",
+  "fetched_at_utc8": "2026-10-15T20:05:04+08:00",
+  "sources": {
+    "stablecoins_base": "https://stablecoins.llama.fi/stablecoins?chain=Base",
+    "usdc_asset": "https://stablecoins.llama.fi/stablecoin/2",
+    "base_chain_chart": "https://stablecoins.llama.fi/stablecoincharts/Base"
+  },
+  "usdc_base_points": 1157,
+  "base_chart_points": 1158,
+  "base_assets_with_usd": 57
+}

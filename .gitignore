@@ -1,0 +1,14 @@
+# 抓取中间产物：体积大、可用脚本重新获得，不进版本库
+data/raw_*.json
+data/windows/w*.json
+
+# Python
+__pycache__/
+*.pyc
+
+# 系统与编辑器
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/

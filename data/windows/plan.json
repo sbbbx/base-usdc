@@ -1,0 +1,85 @@
+{
+  "rpc": "https://base-rpc.publicnode.com",
+  "head_block": 52639572,
+  "head_time": 1792068491,
+  "ref_block": 52596372,
+  "ref_time": 1791982091,
+  "blocks_per_second": 0.5,
+  "blocks_per_hour": 1800.0,
+  "hours": 24,
+  "blocks_per_window": 50,
+  "windows": {
+    "0": {
+      "start_block": 52596372
+    },
+    "1": {
+      "start_block": 52598172
+    },
+    "2": {
+      "start_block": 52599972
+    },
+    "3": {
+      "start_block": 52601772
+    },
+    "4": {
+      "start_block": 52603572
+    },
+    "5": {
+      "start_block": 52605372
+    },
+    "6": {
+      "start_block": 52607172
+    },
+    "7": {
+      "start_block": 52608972
+    },
+    "8": {
+      "start_block": 52610772
+    },
+    "9": {
+      "start_block": 52612572
+    },
+    "10": {
+      "start_block": 52614372
+    },
+    "11": {
+      "start_block": 52616172
+    },
+    "12": {
+      "start_block": 52617972
+    },
+    "13": {
+      "start_block": 52619772
+    },
+    "14": {
+      "start_block": 52621572
+    },
+    "15": {
+      "start_block": 52623372
+    },
+    "16": {
+      "start_block": 52625172
+    },
+    "17": {
+      "start_block": 52626972
+    },
+    "18": {
+      "start_block": 52628772
+    },
+    "19": {
+      "start_block": 52630572
+    },
+    "20": {
+      "start_block": 52632372
+    },
+    "21": {
+      "start_block": 52634172
+    },
+    "22": {
+      "start_block": 52635972
+    },
+    "23": {
+      "start_block": 52637772
+    }
+  }
+}

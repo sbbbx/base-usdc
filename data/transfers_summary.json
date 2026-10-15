@@ -1,0 +1,152 @@
+{
+  "endpoints": [
+    "https://base.drpc.org",
+    "https://base.publicnode.com",
+    "https://gateway.tenderly.co/public/base",
+    "https://base-mainnet.public.blastapi.io",
+    "https://base.rpc.thirdweb.com",
+    "https://1rpc.io/base"
+  ],
+  "per_endpoint": {
+    "https://base.drpc.org": {
+      "requests": 24,
+      "bytes": 59532962
+    }
+  },
+  "sampled_at_utc8": "2026-10-15T20:56:06+08:00",
+  "plan": {
+    "head_block": 52639572,
+    "head_time": 1792068491,
+    "ref_block": 52596372,
+    "ref_time": 1791982091,
+    "blocks_per_second": 0.5,
+    "blocks_per_hour": 1800.0,
+    "hours": 24,
+    "blocks_per_window": 50
+  },
+  "windows": 24,
+  "blocks_total": 1200,
+  "logs_total": 93656,
+  "kinds": {
+    "mint": 130,
+    "transfer": 93390,
+    "burn": 136
+  },
+  "target": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "usd_total": 7057683822.4,
+  "usd_median": 96.02,
+  "usd_p90": 5208.09,
+  "usd_p99": 257462.65,
+  "usd_max": 236381450.41,
+  "top_1pct_value_share": 0.9262,
+  "unique_senders": 13159,
+  "unique_receivers": 12158,
+  "top_senders": [
+    {
+      "address": "0x2df380544b88adb3ad0a94100dcc45fd705aae2d",
+      "n": 4427,
+      "share": 0.0473
+    },
+    {
+      "address": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+      "n": 2425,
+      "share": 0.0259
+    },
+    {
+      "address": "0x51c72848c68a965f66fa7a88855f9f7784502a7f",
+      "n": 1999,
+      "share": 0.0213
+    },
+    {
+      "address": "0xb2cc224c1c9fee385f8ad6a55b4d94e92359dc59",
+      "n": 1949,
+      "share": 0.0208
+    },
+    {
+      "address": "0x29be31e7ef434a74d69da1cb6b51ad65c83e9a7b",
+      "n": 1911,
+      "share": 0.0204
+    },
+    {
+      "address": "0x4f6f91599858bf0d19fabcf2c5d591fe13f7c059",
+      "n": 1765,
+      "share": 0.0188
+    },
+    {
+      "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+      "n": 1740,
+      "share": 0.0186
+    },
+    {
+      "address": "0xda8115f123e08bab243b2008994ec0be55111e6c",
+      "n": 1337,
+      "share": 0.0143
+    },
+    {
+      "address": "0x1d7f97d26ae2c01f9b01fc252b73cf0db3397e95",
+      "n": 1222,
+      "share": 0.013
+    },
+    {
+      "address": "0x72ab388e2e2f6facef59e3c3fa2c4e29011c2d38",
+      "n": 1132,
+      "share": 0.0121
+    }
+  ],
+  "top_receivers": [
+    {
+      "address": "0x2df380544b88adb3ad0a94100dcc45fd705aae2d",
+      "n": 4417,
+      "share": 0.0472
+    },
+    {
+      "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+      "n": 2341,
+      "share": 0.025
+    },
+    {
+      "address": "0x51c72848c68a965f66fa7a88855f9f7784502a7f",
+      "n": 2331,
+      "share": 0.0249
+    },
+    {
+      "address": "0x29be31e7ef434a74d69da1cb6b51ad65c83e9a7b",
+      "n": 1986,
+      "share": 0.0212
+    },
+    {
+      "address": "0xb2cc224c1c9fee385f8ad6a55b4d94e92359dc59",
+      "n": 1903,
+      "share": 0.0203
+    },
+    {
+      "address": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+      "n": 1481,
+      "share": 0.0158
+    },
+    {
+      "address": "0xda8115f123e08bab243b2008994ec0be55111e6c",
+      "n": 1329,
+      "share": 0.0142
+    },
+    {
+      "address": "0x4f6f91599858bf0d19fabcf2c5d591fe13f7c059",
+      "n": 1246,
+      "share": 0.0133
+    },
+    {
+      "address": "0x72ab388e2e2f6facef59e3c3fa2c4e29011c2d38",
+      "n": 1239,
+      "share": 0.0132
+    },
+    {
+      "address": "0xb4cb800910b228ed3d0834cf79d697127bbb00e5",
+      "n": 1056,
+      "share": 0.0113
+    }
+  ],
+  "requests": 24,
+  "bytes_downloaded": 59532962,
+  "rpc_seconds": 197.9,
+  "server_retries": 0
+}
