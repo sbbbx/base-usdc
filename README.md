@@ -1,12 +1,13 @@
 # Base 链上 USDC：规模、份额与转账活动
 
-作品集前三张图。数据全部来自免费的公开接口：DefiLlama Stablecoins API（免 key）与 Base 公共 RPC（免 key），脚本可复现。配套技术文：[中文 `article.md`](article.md) · [English `article.en.md`](article.en.md)。
+作品集前四张图。数据全部来自免费的公开接口：DefiLlama Stablecoins API（免 key）与 Base 公共 RPC（免 key），脚本可复现。配套技术文：[中文 `article.md`](article.md) · [English `article.en.md`](article.en.md)。
 
 | 图 | 看什么 | 数据源 |
 | --- | --- | --- |
 | 图 1 | 存量：Base 上 USDC 的规模、构成与份额（2023-08 – 2026-10 日度） | `stablecoins.llama.fi` |
 | 图 2 | 流量：24 小时采样窗口内的转账笔数、金额分布与集中度 | Base RPC `eth_getLogs` |
 | 图 3 | 基线：把 24 小时快照放进 7 天（168 个采样窗口）的日内节律，以及集中度与天量转账的复核 | Base RPC `eth_getLogs` |
+| 图 4 | 通道：跨链桥入的 USDC 存量如何一路净流出，以及 `minted` 缺失日造出的假值 | `stablecoins.llama.fi` |
 
 ---
 
@@ -65,6 +66,19 @@
 
 ---
 
+## 图 4 · 跨链桥这条通道的退场
+
+![Base USDC 跨链桥通道](figures/base_usdc_bridge.png)
+
+**口径**：桥入存量 = 流通量 −（`minted` − `unreleased`），与 DefiLlama 的 `bridgedTo` 字段一致；与图 1 同一份日度数据，本图不新增抓取。`minted` 字段在 2023-12-20 之后仍有 2 天缺失（2024-04-18、2024-04-20），缺失日会把整条流通量误记成桥入（那天「桥入」写成 21 亿美元，真实量级约 8,300 万），因此除右下角案例外，所有统计都剔除缺失日、并按月度取每月最后一个有效日。
+
+- **退场**：桥入存量 2023-08-16 是 5,280 万美元，2023-09-04 冲到 1.243 亿美元峰值，此后 38 个月里 26 个月净流出，到 2026-10-15 只剩 632 万美元，比峰值低 94.9%。
+- **占比**：桥入占流通量的比例从 100%（2023-08，当时还没有原生铸造）降到 0.14%（2026-10-15）。同期流通量净增 43.25 亿美元、原生净增 43.72 亿美元——这条通道退场的同时，规模的增长全部由原生发行承担。
+- **净变化**：月度桥净变化最大单月净流入 3,441 万美元（2023-12，与 Circle 原生发行同月），最大单月净流出 3,418 万美元（2024-01）。
+- **拿不到的东西**：DefiLlama 的桥梁明细端点（`bridges.llama.fi`）2026-10-16 实测返回 HTTP 402，无法核对到具体是哪座桥，本图只描述通道层面的存量变化。
+
+---
+
 ## 文件
 
 ```
@@ -88,6 +102,7 @@ fetch_transfers_week.py       图 3：7 天 × 24 窗口采样（密度同图 2�
                                汇总阶段 → data/week/*.csv + summary.json + sample.csv（91 MB，未纳入版本库）
 make_week_figure.py           图 3：读 data/week/*.csv 与单日 sample 出图 → figures/base_usdc_week.{png,svg,pdf}
 analyze_roundtrips.py         图 3 的补充分析：统计「同秒、等额、反向」的镜像往返占金额的比例
+make_bridge_figure.py         图 4：只读 data/usdc_base_daily.csv 出图（不新增抓取）→ figures/base_usdc_bridge.{png,svg,pdf}
 data/week/week_hourly.csv     7 天 × 24 小时的笔数节律（逐小时均值 / 最大 / 变异系数）
 data/week/week_hist_amount.csv    一周金额分布（0.05 个数量级一箱）
 data/week/week_concentration.csv  一周集中度曲线（rank_pct / cum_value_share）
@@ -108,6 +123,7 @@ python -u make_transfer_figure.py
 python -u fetch_transfers_week.py     # 7 天 × 24 窗口基线，需要约 440 MB、约 20 分钟
 python -u make_week_figure.py
 python -u analyze_roundtrips.py       # 镜像往返占比（需 data/week/sample.csv）
+python -u make_bridge_figure.py       # 图 4：只读已有 CSV，不新增抓取
 ```
 
 依赖：Python 3 + pandas + matplotlib（本机 Python 3.14.4 / matplotlib 3.11.1 / pandas 3.0.5 实测通过）。两个抓取脚本只用标准库，不需要任何 API key。
@@ -122,3 +138,5 @@ python -u analyze_roundtrips.py       # 镜像往返占比（需 data/week/sampl
 - 图 3 的一周基线同样只覆盖该周区块数的 2.778%，而且每天的窗口都落在同一分钟偏移（每小时 :35），可能系统性地错过别的分钟；图中日内节律是 7 天平均的结果，不等于任何单独一天。
 - 图 3 的「同秒、等额、反向」匹配只在样本内做，另一半若落在采样窗口之外就发现不了，因此 71.0% 是这类往返占比的下界。
 - 图 3 里出现的 41 个大额地址，其链下归属没有独立证据（没有做标签库对照），文中只描述行为，不断言身份。
+- 图 4 的桥入存量取自 DefiLlama 的 `bridgedTo` 拆分，同样是第三方聚合口径；桥梁明细端点 2026-10-16 返回 HTTP 402，无法确认具体是哪座桥。
+- 图 4 的 `minted` 字段在 2024-04-18、2024-04-20 缺失，缺失日会把整条流通量误记为桥入；本图剔除这两天并取月度为口径，日度视图下这两天不可用。
