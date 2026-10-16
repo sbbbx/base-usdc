@@ -77,21 +77,31 @@ Bridged stock (circulating supply minus `minted − unreleased`, matching DefiLl
 
 The figure also caught a definition trap: `minted` is still missing on 2024-04-18 and 2024-04-20, and on a missing day the whole $2.1 billion of supply is booked as bridged in while the real magnitude is $83 million. Any series split as "circulating = native + bridged" needs its components checked for completeness first. DefiLlama's bridge-detail endpoint returned HTTP 402 on 2026-10-16, so this section describes channel-level stock only and names no bridges.
 
-## 6. Reading the five figures together
+## 6. Who is moving the money: switch to addresses and the concentration gets worse
+
+Every earlier figure counted transfers. Take the same week-long sample (168 fifty-block windows, 730,778 logs, $37.75 billion gross) and count addresses instead. By transfer, the top 1% (7,307 transactions) carries 80.5% of the value; by address, the top 10 carry 87.3% and the top 100 carry 99.0%. The Gini coefficients are 0.9844 and 0.9998 respectively, and the address view has almost no middle layer: of 135,779 addresses, 62.7% appear exactly once (0.09% of the value between them) while 184 addresses (0.14%) carry 63.4% of participation. The per-address median is $5; the per-transfer median is $92.82.
+
+The flip side of concentration is shuttling. 49.4% of the value can be matched to a reverse transfer between the same pair of addresses, 48.8% has a reverse leg inside the same fifty-block window (~100 seconds), and 45.4% never leaves the second it arrived in. Correspondingly, the largest net inflow in the sample is $15.00 million and the largest net outflow is $17.84 million — together 0.09% of gross.
+
+The extreme case among the top ten is 0xbbbb… (tagged by a public explorer as the Morpho Blue lending contract): 8,840 transfers, 33.7% of address participation, and a net position of +$2.6 million, under 0.02% of its own turnover. The largest round trip in the sample sits in block 52,650,046: inside one transaction (tx 0x0afdd3e0…) that contract sends 238,890,119.82 USDC and takes the same amount back — the signature of a zero-fee flash loan. I re-fetched the block's 93 logs and they match the local sample row by row (recorded in `data/address_evidence.json`). Every one of the top 15 nets out to less than 0.05% of its own participation: these are not holders, they are channels.
+
+![Address view of USDC transfers](figures/base_usdc_addresses.png)
+
+## 7. Reading the six figures together
 
 $4.38 billion of stock and $37.75 billion of transfers inside the week's sampled windows cannot be subtracted from each other: they do not measure the same thing.
 
 Three takeaways:
 
 1. Metrics like "USDC transfer count" are inflated by small transfers: 18.4% of them are under $1.
-2. Value-side concentration and flow are both set by a handful of addresses shuttling back and forth: the top 1% carries roughly 80–93% of the value depending on the definition, and 71% of the million-dollar-plus part nets to zero. Separate carriage from transfer before reading flows.
+2. Value-side concentration and flow are both set by a handful of addresses shuttling back and forth: by transfer, the top 1% carries roughly 80–93% of the value depending on the definition, and 71% of the million-dollar-plus part nets to zero; by address, the top 10 carry 87.3% and none of the top 15 nets out to even 0.05% of its own participation. Separate carriage from transfer before reading flows.
 3. Falling share and growing size can hold at the same time; the denominator decides the share. An analysis that plots one asset will reach the opposite conclusion.
 4. Constituent channels can exit: bridge-in went from the only entry point to a 0.14% remainder while the growth was carried by native issuance. Read "where it came from" separately from "how much there is".
 
-## 7. Limitations
+## 8. Limitations
 
 - Figures 2 and 3 each rest on a 2.8% block sample in contiguous 50-block windows, so they represent only the periods drawn, with no intraday weighting; Figure 3's windows also sit at the same minute offset (:35 of every hour), and its intraday rhythm is a seven-day average, not any single day.
-- Addresses are deduplicated literally: EOAs and contracts are not distinguished, and no entity-level merging was done. Concentration is ranked by transfer, not by address.
+- Addresses are deduplicated literally: EOAs and contracts are not distinguished, and no entity-level merging was done. Concentration is reported both by transfer and by address (figure 6).
 - Amounts are denominated in USDC and reconstructed from 6 decimals without a second check; mint and burn only reflect Circle's native issuance and redemption, while USDC arriving over a bridge appears on-chain as an ordinary transfer.
 - Figure 1 rests on a third-party aggregation and was not reconciled trade by trade; the `minted` and `unreleased` fields only exist from 2023-12-20, and everything before that is treated as bridged in; the share denominator includes only assets DefiLlama flags as USD-pegged, excluding EUR and other pegs.
 - Two self-checks from this work belong here as well. The histogram floor once silently dropped every transfer below it, and a new variable collided with the bar-position variable, so `log10(0)` raised `ValueError: Maximum allowed size exceeded`.
@@ -99,8 +109,9 @@ Three takeaways:
 - The 41 large addresses have no independent evidence of off-chain identity (no label provider was consulted); the text describes their behaviour only.
 - Figure 4's bridged stock is DefiLlama's `bridgedTo` split (a third-party aggregation, not reconciled trade by trade); `minted` is missing on 2024-04-18 and 2024-04-20, when the whole supply would be booked as bridged in, so those days are dropped and the view is monthly; the bridge-detail endpoint returned HTTP 402 on 2026-10-16, so no individual bridge can be confirmed.
 - Figure 5's arrival date is the day the asset first shows non-zero circulating supply in DefiLlama's data, which is not necessarily its launch date; smaller assets' history may be backfilled or revised upstream. Its "other" band is the residual against the total, contains assets that have since exited, and names none of them.
+- Figure 6 inherits the 2.8% sample, so its round-trip shares are lower bounds (a counterpart outside the sampled windows is invisible); "participation" counts every transfer at both ends, which makes the total 200% of gross rather than comparable to it; the address label comes from a public explorer tag, not from the project.
 
-## 8. Reproducing
+## 9. Reproducing
 
 ```bash
 cd base-usdc
@@ -114,8 +125,10 @@ python -u analyze_roundtrips.py     # mirror round-trip share (reads data/week/s
 python -u make_bridge_figure.py     # figure 4 (reads existing CSVs, no new fetch)
 python -u fetch_composition.py      # figure 5 data: 12 requests
 python -u make_composition_figure.py   # figure 5
+python -u analyze_addresses.py      # figure 6 data: aggregate the week sample by address
+python -u make_address_figure.py    # figure 6
 ```
 
 Requires Python 3 with pandas and matplotlib; the two fetch scripts use only the standard library. Verified on Python 3.14.4 / matplotlib 3.11.1 / pandas 3.0.5.
 
-All interfaces were measured on 2026-10-15 and 2026-10-16 (UTC+8). Figure 1 covers 2023-08-16 to 2026-10-15; Figure 2 covers 2026-10-14 12:48Z to 10-15 12:48Z; Figure 3 covers 2026-10-09 01:35Z to 10-16 02:04Z; Figures 4 and 5 cover 2023-08-16 to 2026-10-15 (same source as Figure 1).
+All interfaces were measured on 2026-10-15 and 2026-10-16 (UTC+8). Figure 1 covers 2023-08-16 to 2026-10-15; Figure 2 covers 2026-10-14 12:48Z to 10-15 12:48Z; Figure 3 covers 2026-10-09 01:35Z to 10-16 02:04Z; Figures 4 and 5 cover 2023-08-16 to 2026-10-15 (same source as Figure 1); Figure 6 uses the same sample as Figure 3.

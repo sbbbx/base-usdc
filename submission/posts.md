@@ -3,13 +3,16 @@
 面向公开渠道的投放素材。**串（第 1 节）**用于 X / Farcaster，**长文（第 2 节）**用于 Medium / Substack / paragraph / Reddit，**中文短版（第 3 节）**备用。
 每条英文都已按 280 字符限长写过，可直接复制粘贴。
 
-## 0. 发布前清单
+## 0. 发布前清单（2026-10-16 已全部执行，X 与 Farcaster 均已发布）
 
-- [ ] 附件图：`figures/base_usdc_cover.png`（2400×1200，2:1；也可只在首条挂图，后续条挂对应单图）
-- [ ] 链接：https://github.com/sbbbx/base-usdc
-- [ ] 可 @ 的对象（X）：`@base`、`@buildonbase`、`@DefiLlama`；Farcaster 建议发到 `base` 频道
-- [ ] 不写：钱包地址、邮箱、KYC 信息、居住地
-- [ ] 署名：默认用仓库 handle `sbbbx`（要露英文名 Benjamin Shen 也可，自己定；发布内容与仓库署名保持一致最省事）
+- [x] 附件图：首条挂封面 `figures/base_usdc_cover.png`，第 2–5 条挂对应单图（存量 / 构成 / 转账 / 一周基线）；两个平台都按这个方案挂了图
+- [x] 链接：https://github.com/sbbbx/base-usdc （首条文字带 "Repo ↓"，末条给完整 URL 生成链接卡）
+- [x] 可 @ 的对象：X 末条 `@base` `@buildonbase` `@DefiLlama`（均已解析为真账号）；Farcaster 发到 `base` 频道（首帖头部渲染出 `/base` 频道链接，已核验）
+- [x] 不写：钱包地址、邮箱、KYC 信息、居住地 —— 逐条检查通过
+- [x] 署名：`sbbbx`（仓库 handle 与 Farcaster `@sbbbx` 一致；X 账号为 `@bxs1524649`）
+- [x] **X 串已发布**：首帖 https://x.com/bxs1524649/status/2110956429452742870
+- [x] **Farcaster 串已发布**：首帖 https://farcaster.xyz/sbbbx/0x541bbfeb （`/base` 频道，7 条 + 5 图）
+- 发布记录：`E:\PythonProjects\Web3\00-web3副业与读博路线-决策记录.md` §33（X，含 6 条 status id 与踩坑）与 §34（Farcaster，含 6 条 cast hash 与踩坑）
 
 ## 1. X / Farcaster 串（7 条）
 

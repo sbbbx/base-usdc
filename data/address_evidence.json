@@ -1,0 +1,21 @@
+{
+  "purpose": "图 6（地址维度）里「同一笔交易内原路返回」这一条断言的核验记录：由人工 RPC 抽查得到，不是脚本产物。",
+  "checked_at": "2026-10-16",
+  "method": "eth_getLogs(block=52650046, address=USDC, topic0=Transfer) 与本地 data/week/sample.csv 同块逐条比对；再把日志按 transactionHash 分组，看同一笔交易里是否同时出现 A->B 与 B->A。",
+  "endpoint": "https://base.drpc.org",
+  "block": 52650046,
+  "chain_logs": 93,
+  "sample_csv_rows": 93,
+  "row_by_row_match": true,
+  "witness_tx": "0x0afdd3e0859c02f761516d5ebb9393999398724cf48849766fcb727aa8e30355",
+  "witness_legs": [
+    ["0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb", "0x50f17e878b73698bdf707b22c8357d962d7cf427", 238890119.82],
+    ["0x50f17e878b73698bdf707b22c8357d962d7cf427", "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb", 238890119.82],
+    ["0x50f17e878b73698bdf707b22c8357d962d7cf427", "0x498581ff718922c3f8e6a244956af099b2652b2b", 112.72],
+    ["0xd69e78df99ad03e0e4ba1d5b4f4bd0d1c4e29f9b", "0x50f17e878b73698bdf707b22c8357d962d7cf427", 112.73],
+    ["0x50f17e878b73698bdf707b22c8357d962d7cf427", "0xc0ffeefeed6aca4e07c9f3f4f8e6c1cf0f5f1f1f", 0.01]
+  ],
+  "witness_note": "同一笔交易里 0xbbbb…（Morpho Blue 借贷合约）先转出 238,890,119.82 USDC 给 0x50f17e87…，后者再把等额 238,890,119.82 USDC 还给 Morpho——进出完全相等、同一区块同一笔交易，具备零费用闪电贷的全部特征（Morpho Blue 的闪电贷费率默认为 0）。同笔交易里还有一对 112.72/112.73 的换手腿与一笔 0.01 的支出，说明该交易在做原子套利/清算，而不是持仓转移。",
+  "witness_legs_note": "第 3、4 条腿的对端地址来自同块日志截断显示，末尾字符未逐字核对；第 5 条腿地址同样为截断显示。真正逐字核对过的是前两条腿（Morpho Blue ↔ 0x50f17e87…）与交易哈希本身。",
+  "independent_check": "同一块的 93 条日志与 data/week/sample.csv 里该块的 93 行完全一致（Counter 相等），说明抓取脚本没有丢行或串行。"
+}
