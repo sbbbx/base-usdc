@@ -1,0 +1,214 @@
+{
+  "per_endpoint": {},
+  "sampled_at_utc8": "2026-10-16T10:25:28+08:00",
+  "plan": {
+    "head_block": 52663468,
+    "head_time": 1792116283,
+    "ref_block": 52660800,
+    "ref_time": 1792110947,
+    "blocks_per_second": 0.5,
+    "blocks_per_hour": 1800.0,
+    "days": 7,
+    "windows_per_day": 24,
+    "blocks_per_window": 50
+  },
+  "coverage": {
+    "windows_expected": 168,
+    "windows_done": 168,
+    "days_done": 7,
+    "blocks_total": 8400,
+    "minutes_total": 273.84,
+    "share_of_week_pct": 2.778
+  },
+  "logs_total": 730778,
+  "kinds": {
+    "transfer": 729416,
+    "mint": 794,
+    "burn": 568
+  },
+  "target": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+  "usd_total": 37747008837.99,
+  "usd_median": 92.82,
+  "usd_p90": 7782.02,
+  "usd_p99": 425056.01,
+  "usd_max": 238890119.82,
+  "n_zero": 25036,
+  "n_under_1usd": 139867,
+  "top_1pct_value_share": 0.8053,
+  "top_0p1pct_value_share": 0.6986,
+  "unique_senders": 84105,
+  "unique_receivers": 85437,
+  "top_senders": [
+    {
+      "address": "0x2df380544b88adb3ad0a94100dcc45fd705aae2d",
+      "n": 39102,
+      "share": 0.0535
+    },
+    {
+      "address": "0xb2cc224c1c9fee385f8ad6a55b4d94e92359dc59",
+      "n": 17167,
+      "share": 0.0235
+    },
+    {
+      "address": "0xb300000b72deaeb607a12d5f54773d1c19c7028d",
+      "n": 16911,
+      "share": 0.0231
+    },
+    {
+      "address": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+      "n": 16667,
+      "share": 0.0228
+    },
+    {
+      "address": "0x61040e143a77f165ba44543af4a079f2c809d14b",
+      "n": 15636,
+      "share": 0.0214
+    },
+    {
+      "address": "0x67d03631fe51b741c0c00c4e16eb662ac84381df",
+      "n": 15355,
+      "share": 0.021
+    },
+    {
+      "address": "0x4f6f91599858bf0d19fabcf2c5d591fe13f7c059",
+      "n": 13551,
+      "share": 0.0185
+    },
+    {
+      "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+      "n": 12075,
+      "share": 0.0165
+    },
+    {
+      "address": "0x51c72848c68a965f66fa7a88855f9f7784502a7f",
+      "n": 11721,
+      "share": 0.016
+    },
+    {
+      "address": "0x29be31e7ef434a74d69da1cb6b51ad65c83e9a7b",
+      "n": 10565,
+      "share": 0.0145
+    }
+  ],
+  "top_receivers": [
+    {
+      "address": "0x2df380544b88adb3ad0a94100dcc45fd705aae2d",
+      "n": 39060,
+      "share": 0.0534
+    },
+    {
+      "address": "0xb2cc224c1c9fee385f8ad6a55b4d94e92359dc59",
+      "n": 17262,
+      "share": 0.0236
+    },
+    {
+      "address": "0xb300000b72deaeb607a12d5f54773d1c19c7028d",
+      "n": 16828,
+      "share": 0.023
+    },
+    {
+      "address": "0x61040e143a77f165ba44543af4a079f2c809d14b",
+      "n": 15272,
+      "share": 0.0209
+    },
+    {
+      "address": "0x498581ff718922c3f8e6a244956af099b2652b2b",
+      "n": 14141,
+      "share": 0.0194
+    },
+    {
+      "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+      "n": 12189,
+      "share": 0.0167
+    },
+    {
+      "address": "0x51c72848c68a965f66fa7a88855f9f7784502a7f",
+      "n": 10391,
+      "share": 0.0142
+    },
+    {
+      "address": "0x29be31e7ef434a74d69da1cb6b51ad65c83e9a7b",
+      "n": 9316,
+      "share": 0.0127
+    },
+    {
+      "address": "0x4f6f91599858bf0d19fabcf2c5d591fe13f7c059",
+      "n": 8785,
+      "share": 0.012
+    },
+    {
+      "address": "0x7797c4a7f786f77dbce13d71d2c710310cb92aa3",
+      "n": 7983,
+      "share": 0.0109
+    }
+  ],
+  "per_day": [
+    {
+      "day_offset": 0,
+      "date_utc": "2026-10-15",
+      "windows": 24,
+      "n_logs": 111607,
+      "rate_mean": 2852.9,
+      "usd_total": 2612563520.31,
+      "usd_median_mean": 66.73
+    },
+    {
+      "day_offset": 1,
+      "date_utc": "2026-10-14",
+      "windows": 24,
+      "n_logs": 125934,
+      "rate_mean": 3219.2,
+      "usd_total": 3529307320.89,
+      "usd_median_mean": 82.94
+    },
+    {
+      "day_offset": 2,
+      "date_utc": "2026-10-13",
+      "windows": 24,
+      "n_logs": 113420,
+      "rate_mean": 2899.3,
+      "usd_total": 7715867970.91,
+      "usd_median_mean": 84.5
+    },
+    {
+      "day_offset": 3,
+      "date_utc": "2026-10-12",
+      "windows": 24,
+      "n_logs": 105735,
+      "rate_mean": 2702.8,
+      "usd_total": 9321776383.24,
+      "usd_median_mean": 102.11
+    },
+    {
+      "day_offset": 4,
+      "date_utc": "2026-10-11",
+      "windows": 24,
+      "n_logs": 88190,
+      "rate_mean": 2254.3,
+      "usd_total": 8558931044.42,
+      "usd_median_mean": 107.79
+    },
+    {
+      "day_offset": 5,
+      "date_utc": "2026-10-10",
+      "windows": 24,
+      "n_logs": 85928,
+      "rate_mean": 2196.5,
+      "usd_total": 3998877421.74,
+      "usd_median_mean": 95.3
+    },
+    {
+      "day_offset": 6,
+      "date_utc": "2026-10-09",
+      "windows": 24,
+      "n_logs": 99964,
+      "rate_mean": 2555.3,
+      "usd_total": 2009685176.49,
+      "usd_median_mean": 140.29
+    }
+  ],
+  "requests": 0,
+  "bytes_downloaded": 0,
+  "rpc_seconds": 0.0,
+  "server_retries": 0
+}
