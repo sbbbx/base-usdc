@@ -1,6 +1,6 @@
 # Base 链上 USDC：规模、份额与转账活动
 
-作品集前四张图。数据全部来自免费的公开接口：DefiLlama Stablecoins API（免 key）与 Base 公共 RPC（免 key），脚本可复现。配套技术文：[中文 `article.md`](article.md) · [English `article.en.md`](article.en.md)。
+作品集前五张图。数据全部来自免费的公开接口：DefiLlama Stablecoins API（免 key）与 Base 公共 RPC（免 key），脚本可复现。配套技术文：[中文 `article.md`](article.md) · [English `article.en.md`](article.en.md)。
 
 | 图 | 看什么 | 数据源 |
 | --- | --- | --- |
@@ -8,6 +8,7 @@
 | 图 2 | 流量：24 小时采样窗口内的转账笔数、金额分布与集中度 | Base RPC `eth_getLogs` |
 | 图 3 | 基线：把 24 小时快照放进 7 天（168 个采样窗口）的日内节律，以及集中度与天量转账的复核 | Base RPC `eth_getLogs` |
 | 图 4 | 通道：跨链桥入的 USDC 存量如何一路净流出，以及 `minted` 缺失日造出的假值 | `stablecoins.llama.fi` |
+| 图 5 | 分母：Base 美元稳定币的构成里，USDC 之外的资产什么时候出现、现在多大 | `stablecoins.llama.fi` |
 
 ---
 
@@ -79,6 +80,19 @@
 
 ---
 
+## 图 5 · 分母里长出了什么（Base 美元稳定币的构成）
+
+![Base 美元稳定币构成](figures/base_usdc_composition.png)
+
+**口径**：按资产 id 取 `stablecoins.llama.fi/stablecoin/{id}` 的 `chainBalances.Base.tokens[]`，快照日与图 1 对齐（2026-10-15）。除 USDC 外只单列当期 ≥1,500 万美元的 6 个资产，其余合并为「其他」。
+
+- **总盘**：Base 上锚定美元的稳定币合计 51.89 亿美元，其中 USDC 43.78 亿（84.4%），其余合计 8.11 亿（15.6%）。
+- **追赶者都是最近两年才出现的**：cgUSD 2024-02、EUSD 2024-05、USDe 2024-08、MSUSD 2025-11、rwaUSDi 2026-03、OUSD 2026-09。现在规模最大的是 USDe 3.87 亿（占总量 7.45%），其次 rwaUSDi 1.47 亿（2.84%）、OUSD 9,060 万（1.75%）。
+- **拆开看这份份额下滑**：USDC 从 97.2%（2024-04-23）降到 84.4%，一共 12.8 个百分点。其中 USDe 一个占 7.4 个点，2026 年才出现的 rwaUSDi 与 OUSD 合计 4.6 个点，其余 6 个资产与长尾分掉不到 1 个点。份额的对手不是一个币，而是一串在不同时间点出现的资产。
+- **长尾一直在 3–4% 上下**：「其他」（未单列的资产）2025 年最高 3.17 亿美元，2026-10-15 为 7,378 万美元；其中最大的五个是 PINTO、satUSD、USDV、apxUSD、USDz（各约 650 万–1,070 万美元）。这些名字在 2024 年的数据里还不存在。
+
+---
+
 ## 文件
 
 ```
@@ -103,6 +117,10 @@ fetch_transfers_week.py       图 3：7 天 × 24 窗口采样（密度同图 2�
 make_week_figure.py           图 3：读 data/week/*.csv 与单日 sample 出图 → figures/base_usdc_week.{png,svg,pdf}
 analyze_roundtrips.py         图 3 的补充分析：统计「同秒、等额、反向」的镜像往返占金额的比例
 make_bridge_figure.py         图 4：只读 data/usdc_base_daily.csv 出图（不新增抓取）→ figures/base_usdc_bridge.{png,svg,pdf}
+fetch_composition.py          图 5：按资产 id 抓 Base 逐日流通量（12 个 ≥500 万美元的资产）→ data/base_composition.csv
+make_composition_figure.py    图 5：只读上述 CSV 与图 1 的两份 CSV 出图 → figures/base_usdc_composition.{png,svg,pdf}
+data/base_composition.csv     各资产逐日流通量（date, symbol, usd），随仓库提供
+data/composition_meta.json    图 5 抓取元信息（快照日、阈值、各资产 id 与到达日）
 data/week/week_hourly.csv     7 天 × 24 小时的笔数节律（逐小时均值 / 最大 / 变异系数）
 data/week/week_hist_amount.csv    一周金额分布（0.05 个数量级一箱）
 data/week/week_concentration.csv  一周集中度曲线（rank_pct / cum_value_share）
@@ -124,6 +142,8 @@ python -u fetch_transfers_week.py     # 7 天 × 24 窗口基线，需要约 440
 python -u make_week_figure.py
 python -u analyze_roundtrips.py       # 镜像往返占比（需 data/week/sample.csv）
 python -u make_bridge_figure.py       # 图 4：只读已有 CSV，不新增抓取
+python -u fetch_composition.py        # 图 5 数据：12 次请求，约 1 分钟
+python -u make_composition_figure.py  # 图 5
 ```
 
 依赖：Python 3 + pandas + matplotlib（本机 Python 3.14.4 / matplotlib 3.11.1 / pandas 3.0.5 实测通过）。两个抓取脚本只用标准库，不需要任何 API key。
@@ -140,3 +160,5 @@ python -u make_bridge_figure.py       # 图 4：只读已有 CSV，不新增抓�
 - 图 3 里出现的 41 个大额地址，其链下归属没有独立证据（没有做标签库对照），文中只描述行为，不断言身份。
 - 图 4 的桥入存量取自 DefiLlama 的 `bridgedTo` 拆分，同样是第三方聚合口径；桥梁明细端点 2026-10-16 返回 HTTP 402，无法确认具体是哪座桥。
 - 图 4 的 `minted` 字段在 2024-04-18、2024-04-20 缺失，缺失日会把整条流通量误记为桥入；本图剔除这两天并取月度为口径，日度视图下这两天不可用。
+- 图 5 的「到达日」是该资产在 DefiLlama 数据里首次出现非零流通量的日期，不等于发行方正式上线日期；小资产的历史可能被上游回填或修订。
+- 图 5 的「其他」是「总量 − 已单列资产」的残差，会随上游分类调整；它包含已经退场的资产，但无法逐一点名。

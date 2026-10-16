@@ -1,0 +1,57 @@
+{
+  "fetched_at_utc8": "2026-10-16T11:06:17+08:00",
+  "snapshot_date": "2026-10-15",
+  "min_usd": 5000000,
+  "assets": {
+    "USDC": {
+      "id": 2,
+      "first_day": "2023-08-16"
+    },
+    "USDe": {
+      "id": 146,
+      "first_day": "2024-08-31"
+    },
+    "rwaUSDi": {
+      "id": 340,
+      "first_day": "2026-03-25"
+    },
+    "OUSD": {
+      "id": 443,
+      "first_day": "2026-09-30"
+    },
+    "cgUSD": {
+      "id": 166,
+      "first_day": "2024-02-21"
+    },
+    "EUSD": {
+      "id": 106,
+      "first_day": "2024-05-04"
+    },
+    "MSUSD": {
+      "id": 326,
+      "first_day": "2025-11-21"
+    },
+    "PINTO": {
+      "id": 232,
+      "first_day": "2025-02-13"
+    },
+    "satUSD": {
+      "id": 218,
+      "first_day": "2025-05-06"
+    },
+    "USDV": {
+      "id": 398,
+      "first_day": "2026-07-19"
+    },
+    "apxUSD": {
+      "id": 354,
+      "first_day": "2026-07-07"
+    },
+    "USDz": {
+      "id": 202,
+      "first_day": "2024-05-19"
+    }
+  },
+  "source": "https://stablecoins.llama.fi/stablecoin/{id} 的 chainBalances.Base.tokens[]",
+  "rows": 6554
+}

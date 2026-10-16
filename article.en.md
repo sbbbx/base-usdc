@@ -23,9 +23,7 @@ Both interfaces need no registration and no key. That is what sets the resolutio
 
 **Week definition**: the same ruler run for seven consecutive days — still one window per hour of 50 consecutive blocks — giving 168 windows / 8,400 blocks / 274 minutes, 2.778% of that week's blocks, spanning 2026-10-09 01:35Z to 10-16 02:04Z (fetched 2026-10-16). This run returned 730,778 logs over 441 MB of egress, 1,082 seconds of RPC time and zero server-side retries.
 
-**Why 50-block windows**: `eth_getLogs` caps a single query at 20,000 results. A 100-block request is rejected in practice (`query exceeds max results 20000`), while 50 blocks return about 12,000 logs and leave margin. The real bottleneck on free endpoints is bandwidth (~0.4 MB/s), not rate limiting: the 24 windows came to 59.5 MB and 198 seconds.
-
-**Endpoints throttle cumulatively**: `base-rpc.publicnode.com` starts returning `HTTP 403: Forbidden` consistently after roughly 200 MB of cumulative query volume, and backoff retries do not help. The script therefore rotates through a pool of endpoints and cools down any that rejects it for 90 seconds; all 24 windows in this run were ultimately served by `base.drpc.org` alone.
+**Why 50-block windows**: `eth_getLogs` caps a single query at 20,000 results — a 100-block request is rejected in practice (`query exceeds max results 20000`), while 50 blocks return about 12,000 logs and leave margin. The real bottleneck on free endpoints is bandwidth (~0.4 MB/s) rather than rate limiting, and endpoints also throttle cumulatively: `base-rpc.publicnode.com` starts returning `HTTP 403` consistently after roughly 200 MB of query volume, and backoff retries do not help, so the script rotates through a pool of endpoints and cools down any that rejects it for 90 seconds.
 
 ## 2. Stock: 83× growth, and one structural replacement
 
@@ -37,7 +35,11 @@ The growth was not smooth. The first jump came in March–May 2024: the $500M ma
 
 Structurally, one replacement happened. Before 2023-12-20, all USDC on Base arrived over bridges; that day Circle began native minting on Base, and the `minted` field only exists from that date. By 2026-10-15, $4.372 billion is natively minted and only $6.32 million is bridged in, or 0.14%.
 
-Share is a separate story. USDC held 84.4% of USD-pegged stablecoin supply on Base on 2026-10-15, against a high of 97% (2024-04-23). The decline is not USDC shrinking — it kept growing over the same period — but the denominator growing new assets: USDe $387M, rwaUSDi $147M, OUSD $90M, cgUSD $76M.
+Share is a separate story. USDC held 84.4% of USD-pegged stablecoin supply on Base on 2026-10-15, against a high of 97% (2024-04-23). The decline is not USDC shrinking — it kept growing over the same period — but the denominator growing new assets.
+
+Those rivals arrived one after another. Figure 5 decomposes Base's USD stablecoin total by asset: cgUSD, EUSD and USDe appear in 2024-02, 2024-05 and 2024-08; MSUSD, rwaUSDi and OUSD in 2025-11, 2026-03 and 2026-09. Of the 12.8 points USDC gave up, USDe alone accounts for 7.4, and the two assets that only appeared in 2026 (rwaUSDi, OUSD) account for 4.6; the other six assets and the long tail split less than one point.
+
+![Base USD stablecoin composition](figures/base_usdc_composition.png)
 
 ## 3. Flow: a 39-minute slice spanning six orders of magnitude
 
@@ -47,9 +49,9 @@ As Figure 2 shows, the 24 windows total 39.1 minutes; of the 93,656 logs, 93,390
 
 **Rate** ranged from 1,710 to 3,616 transfers per minute, averaging 2,387. The low came at 03:48 Beijing time on 10-15, the high at 21:48 on 10-14.
 
-**Amount distribution** is what the figure is really about. The median is $100, P90 $5,498, P99 $263,797, and the largest single transfer $236 million: six orders of magnitude. Another 17,200 transfers are under $1 (18.4% of the total) and 1,310 are exactly zero. The mean or the median of USDC transfers says nothing useful: the mean is dragged by a handful of large trades, and the median sits among the dust that bots move around.
+**Amount distribution** is what the figure is really about. The median is $100, P90 $5,498, P99 $263,797, and the largest single transfer $236 million: six orders of magnitude. Another 17,200 transfers are under $1 (18.4% of the total) and 1,310 are exactly zero. The mean or the median of USDC transfers says nothing useful.
 
-**Concentration**: sorted by amount, the top 0.1% of transfers carry 87.7% of the value, the top 1% carry 92.6%, and the top 10% carry 99.6%. Addresses are just as concentrated: 13,159 senders and 12,158 receivers, with the largest sender accounting for 4.7% of all transfers, and six of the top ten senders also appearing among the top receivers. That is the signature of market makers and routers — the same addresses shuttling value, with no symmetry between count and amount. Those three percentages are the one-day definition; the next section corrects them with a week of data.
+**Concentration**: sorted by amount, the top 0.1% of transfers carry 87.7% of the value, the top 1% carry 92.6%, and the top 10% carry 99.6%. Addresses are just as concentrated: 13,159 senders and 12,158 receivers, with the largest sender accounting for 4.7% of all transfers, and six of the top ten senders also appearing among the top receivers. That is the signature of market makers and routers: the same addresses shuttling value. Those three percentages are the one-day definition; the next section corrects them with a week of data.
 
 **Mints and burns are nearly invisible by value**: 130 mints totalling $2.86 million and 136 burns totalling $1.81 million, just 0.04% of the $7.05 billion transferred in the same windows.
 
@@ -75,7 +77,7 @@ Bridged stock (circulating supply minus `minted − unreleased`, matching DefiLl
 
 The figure also caught a definition trap: `minted` is still missing on 2024-04-18 and 2024-04-20, and on a missing day the whole $2.1 billion of supply is booked as bridged in while the real magnitude is $83 million. Any series split as "circulating = native + bridged" needs its components checked for completeness first. DefiLlama's bridge-detail endpoint returned HTTP 402 on 2026-10-16, so this section describes channel-level stock only and names no bridges.
 
-## 6. Reading the four figures together
+## 6. Reading the five figures together
 
 $4.38 billion of stock and $37.75 billion of transfers inside the week's sampled windows cannot be subtracted from each other: they do not measure the same thing.
 
@@ -88,15 +90,15 @@ Three takeaways:
 
 ## 7. Limitations
 
-- Figure 2 samples 2.8% of blocks, in contiguous 50-block windows, so it represents only the periods drawn; no intraday weighting was applied, and weekdays are not separated from weekends.
+- Figures 2 and 3 each rest on a 2.8% block sample in contiguous 50-block windows, so they represent only the periods drawn, with no intraday weighting; Figure 3's windows also sit at the same minute offset (:35 of every hour), and its intraday rhythm is a seven-day average, not any single day.
 - Addresses are deduplicated literally: EOAs and contracts are not distinguished, and no entity-level merging was done. Concentration is ranked by transfer, not by address.
 - Amounts are denominated in USDC and reconstructed from 6 decimals without a second check; mint and burn only reflect Circle's native issuance and redemption, while USDC arriving over a bridge appears on-chain as an ordinary transfer.
 - Figure 1 rests on a third-party aggregation and was not reconciled trade by trade; the `minted` and `unreleased` fields only exist from 2023-12-20, and everything before that is treated as bridged in; the share denominator includes only assets DefiLlama flags as USD-pegged, excluding EUR and other pegs.
-- Two self-checks from this work belong here as well. The histogram floor was once set to `floor(log10(max(min,1e-4)))`, which silently dropped every transfer below it; and a new variable collided with the bar-position variable, so `log10(0)` raised `ValueError: Maximum allowed size exceeded`.
-- Figure 3's week still covers only 2.778% of that week's blocks, and each day's windows sit at the same minute offset (:35 of every hour), which can systematically miss other minutes; the intraday rhythm is a seven-day average, not any single day.
+- Two self-checks from this work belong here as well. The histogram floor once silently dropped every transfer below it, and a new variable collided with the bar-position variable, so `log10(0)` raised `ValueError: Maximum allowed size exceeded`.
 - The same-second, equal-amount, reverse-direction match is done inside the sample only: a counterpart falling outside the sampled windows is invisible, so 71.0% is a lower bound on this kind of shuttling.
 - The 41 large addresses have no independent evidence of off-chain identity (no label provider was consulted); the text describes their behaviour only.
 - Figure 4's bridged stock is DefiLlama's `bridgedTo` split (a third-party aggregation, not reconciled trade by trade); `minted` is missing on 2024-04-18 and 2024-04-20, when the whole supply would be booked as bridged in, so those days are dropped and the view is monthly; the bridge-detail endpoint returned HTTP 402 on 2026-10-16, so no individual bridge can be confirmed.
+- Figure 5's arrival date is the day the asset first shows non-zero circulating supply in DefiLlama's data, which is not necessarily its launch date; smaller assets' history may be backfilled or revised upstream. Its "other" band is the residual against the total, contains assets that have since exited, and names none of them.
 
 ## 8. Reproducing
 
@@ -110,8 +112,10 @@ python -u fetch_transfers_week.py   # 7 days × 24 windows, ~20 min / 440 MB
 python -u make_week_figure.py       # figure 3
 python -u analyze_roundtrips.py     # mirror round-trip share (reads data/week/sample.csv)
 python -u make_bridge_figure.py     # figure 4 (reads existing CSVs, no new fetch)
+python -u fetch_composition.py      # figure 5 data: 12 requests
+python -u make_composition_figure.py   # figure 5
 ```
 
 Requires Python 3 with pandas and matplotlib; the two fetch scripts use only the standard library. Verified on Python 3.14.4 / matplotlib 3.11.1 / pandas 3.0.5.
 
-All interfaces were measured on 2026-10-15 and 2026-10-16 (UTC+8). Figure 1 covers 2023-08-16 to 2026-10-15; Figure 2 covers 2026-10-14 12:48Z to 10-15 12:48Z; Figure 3 covers 2026-10-09 01:35Z to 10-16 02:04Z; Figure 4 covers 2023-08-16 to 2026-10-15 (same source as Figure 1).
+All interfaces were measured on 2026-10-15 and 2026-10-16 (UTC+8). Figure 1 covers 2023-08-16 to 2026-10-15; Figure 2 covers 2026-10-14 12:48Z to 10-15 12:48Z; Figure 3 covers 2026-10-09 01:35Z to 10-16 02:04Z; Figures 4 and 5 cover 2023-08-16 to 2026-10-15 (same source as Figure 1).
